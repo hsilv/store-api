@@ -20,19 +20,18 @@ router.get('/:id', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
+  const product = Products.updateTotalProduct(req.params.id, req.body);
+  res.json(product);
+});
+
+router.patch('/:id', (req, res) => {
   const product = Products.updateProduct(req.params.id, req.body);
   res.json(product);
 });
 
-router.get('/filter', (req, res) => {
-  res.send('Filter');
-});
-
-router.get('/:id', (req, res) => {
-  res.json({
-    id: req.params.id,
-    name: `Product ${req.params.id}`,
-  });
+router.delete('/:id', (req, res) => {
+  const serviceResponse = Products.deleteProduct(req.params.id);
+  res.json({ message: 'Product deleted', ...serviceResponse });
 });
 
 module.exports = router;

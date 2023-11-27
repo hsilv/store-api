@@ -41,6 +41,18 @@ class ProductService {
     return product;
   }
 
+  updateTotalProduct(id, changes) {
+    const index = this.products.findIndex((product) => product.id === id);
+    if (index === -1) {
+      throw new Error('Product not found');
+    }
+    this.products[index] = {
+      id: this.products[index].id,
+      ...changes,
+    };
+    return this.products[index];
+  }
+
   updateProduct(id, changes) {
     const index = this.products.findIndex((product) => product.id === id);
     if (index === -1) {
