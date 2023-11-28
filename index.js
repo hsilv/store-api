@@ -1,6 +1,7 @@
 const express = require('express');
 const router = require('./app');
 
+const {logError, errorHandler } = require('./middleware/error.handler')
 
 const app = express();
 app.use(express.json());
@@ -41,3 +42,7 @@ app.get('/users', (req, res) => {
     res.send('No limit or offset provided');
   }
 });
+
+
+app.use(logError);
+app.use(errorHandler);
