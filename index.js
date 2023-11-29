@@ -27,6 +27,10 @@ app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
 
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
+
 router(app);
 
 app.use(logError);
