@@ -1,10 +1,24 @@
 const express = require('express');
 const router = require('./app');
+const cors = require('cors');
 
 const {logError, errorHandler, boomErrorHandler } = require('./middleware/error.handler');
 
 const app = express();
 app.use(express.json());
+const allowList = ['http://localhost:8080', "https://silva-ecommerce-api-19f34f3f17fe.herokuapp.com/"];
+const opt = {
+  origin: (origin, callback) => {
+    if (allowList.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+};
+
+app.use(cors(opt));
+
 
 const port = 3000;
 
@@ -14,35 +28,6 @@ app.listen(port, () => {
 });
 
 router(app);
-
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
-
-app.get('/new-route', (req, res) => {
-  res.send('Hello World! This is a new route');
-});
-
-app.get('/categories/:categoryId/products/:productId', (req, res) => {
-  const { categoryId, productId } = req.params;
-  res.json({
-    categoryId,
-    productId,
-  });
-});
-
-app.get('/users', (req, res) => {
-  const { limit, offset } = req.query;
-  if (limit && offset) {
-    res.json({
-      limit,
-      offset,
-    });
-  } else {
-    res.send('No limit or offset provided');
-  }
-});
-
 
 app.use(logError);
 app.use(boomErrorHandler);
