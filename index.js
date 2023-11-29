@@ -17,7 +17,7 @@ const allowList = [
 ];
 const opt = {
   origin: (origin, callback) => {
-    if (allowList.includes(origin)) {
+    if (allowList.includes(origin) || !origin) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
