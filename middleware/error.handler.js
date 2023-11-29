@@ -1,6 +1,6 @@
 function logError(error, req, res, next) {
   // eslint-disable-next-line no-console
-  console.log(error);
+  if (!error.isBoom) console.log(error);
   next(error);
 }
 
