@@ -2,11 +2,19 @@ const express = require('express');
 const router = require('./app');
 const cors = require('cors');
 
-const {logError, errorHandler, boomErrorHandler } = require('./middleware/error.handler');
+const {
+  logError,
+  errorHandler,
+  boomErrorHandler,
+} = require('./middleware/error.handler');
 
 const app = express();
 app.use(express.json());
-const allowList = ['http://localhost:8080', "https://silva-ecommerce-api-19f34f3f17fe.herokuapp.com/"];
+const allowList = [
+  'http://localhost:8080',
+  'https://silva-ecommerce-api-19f34f3f17fe.herokuapp.com/',
+  'http://localhost:3000',
+];
 const opt = {
   origin: (origin, callback) => {
     if (allowList.includes(origin)) {
@@ -18,7 +26,6 @@ const opt = {
 };
 
 app.use(cors(opt));
-
 
 const port = 3000;
 
