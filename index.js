@@ -1,7 +1,7 @@
 const express = require('express');
 const router = require('./app');
 
-const {logError, errorHandler } = require('./middleware/error.handler')
+const {logError, errorHandler, boomErrorHandler } = require('./middleware/error.handler');
 
 const app = express();
 app.use(express.json());
@@ -45,4 +45,5 @@ app.get('/users', (req, res) => {
 
 
 app.use(logError);
+app.use(boomErrorHandler);
 app.use(errorHandler);
