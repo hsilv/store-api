@@ -6,7 +6,8 @@ class UserService {
   constructor() {}
 
   async create(data) {
-    return { data };
+    const newUser = await models.User.create(data);
+    return newUser;
   }
 
   async getAll() {
@@ -15,19 +16,39 @@ class UserService {
   }
 
   async get(id) {
-    return { id };
+    const response = await models.User.findByPk(id);
+    if (!response) {
+      throw boom.notFound('User not found');
+    }
+    return response;
   }
 
   async updateWhole(id, data) {
-    return { id, ...data };
+    const response = await models.User.findByPk(id);
+    if (!response) {
+      throw boom.notFound('User not found');
+    }
+    const updatedUser = await response.update(data);
+    return updatedUser;
   }
 
   async update(id, data) {
-    return { id, ...data };
+    const response = await models.User.findByPk(id);
+    if (!response) {
+      throw boom.notFound('User not found');
+    }
+    const updatedUser = await response.update(data);
+    return updatedUser;
   }
 
   async delete(id) {
-    return { id };
+    const response = await models.User.findByPk(id);
+    if (!response) {
+      throw boom.notFound('User not found');
+    }
+    console.log(response);
+    await response.destroy();
+    return response;
   }
 }
 
