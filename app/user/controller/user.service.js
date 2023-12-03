@@ -6,8 +6,16 @@ class UserService {
   constructor() {}
 
   async create(data) {
-    const newUser = await models.User.create(data);
-    return newUser;
+    try {
+      const newUser = await models.User.create(data);
+      return newUser;
+    } catch (error) {
+      if (error.name === 'SequelizeUniqueConstraintError') {
+        throw boom.conflict('Email already exists');
+      } else {
+        throw boom.badRequest(error.original.message);
+      }
+    }
   }
 
   async getAll() {
@@ -24,31 +32,21 @@ class UserService {
   }
 
   async updateWhole(id, data) {
-    const response = await models.User.findByPk(id);
-    if (!response) {
-      throw boom.notFound('User not found');
-    }
+    const response = await this.get(id);
     const updatedUser = await response.update(data);
     return updatedUser;
   }
 
   async update(id, data) {
-    const response = await models.User.findByPk(id);
-    if (!response) {
-      throw boom.notFound('User not found');
-    }
+    const response = await this.get(id);
     const updatedUser = await response.update(data);
     return updatedUser;
   }
 
   async delete(id) {
-    const response = await models.User.findByPk(id);
-    if (!response) {
-      throw boom.notFound('User not found');
-    }
-    console.log(response);
+    const response = await this.get(id);
     await response.destroy();
-    return response;
+    return { id: response.id };
   }
 }
 
