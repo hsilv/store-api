@@ -1,14 +1,10 @@
 const { faker } = require('@faker-js/faker');
 const boom = require('@hapi/boom');
-
-const { pool } = require('../../../lib/postgres.pool');
+const sequelize = require('../../../lib/sequelize');
 class ProductService {
   constructor() {
     this.products = [];
     this.initProducts(1000);
-    this.pool = pool;
-    // eslint-disable-next-line no-console
-    this.pool.on('error', (err) => console.error(err));
   }
 
   initProducts(quantity) {
@@ -37,8 +33,8 @@ class ProductService {
 
   async getProducts() {
     const query = 'SELECT * FROM tasks';
-    const response = await this.pool.query(query);
-    return response.rows;
+    const [data] = await sequelize.query(query);
+    return data;
   }
 
   async getOneProduct(id) {
@@ -46,7 +42,7 @@ class ProductService {
     if (!product) {
       throw boom.notFound('Product not found');
     }
-    if(product.isBlocked) {
+    if (product.isBlocked) {
       throw boom.locked('Product is blocked');
     }
     return product;

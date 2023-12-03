@@ -6,7 +6,7 @@ function logError(error, req, res, next) {
 
 // eslint-disable-next-line no-unused-vars
 function errorHandler(error, req, res, next){
-  res.status(500).json({ message: error.message, stack: error.stack });
+  res.status(500).json({ message: 'Ha ocurrido un error dentro del servidor'});
 }
 
 function boomErrorHandler(error, req, res, next) {
